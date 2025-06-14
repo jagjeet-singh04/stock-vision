@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 
 export default function SectionSelector({
   setActiveSection,

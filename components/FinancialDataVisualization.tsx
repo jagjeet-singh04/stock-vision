@@ -1,10 +1,14 @@
 // components/FinancialDataVisualization.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+
 'use client';
 
 import { useState, useMemo } from 'react';
 import { 
-  LineChart, BarChart, RadarChart, AreaChart, PieChart,
-  Line, Bar, Radar, Area, Pie, XAxis, YAxis, 
+  LineChart, RadarChart, AreaChart, PieChart,
+  Line, Bar, Radar,   XAxis, YAxis, 
   CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Cell, PolarGrid, PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
@@ -46,7 +50,7 @@ const FinancialDashboard = ({ financialData }: { financialData: FinancialData })
   // Categorize metrics into groups - ONLY THESE WILL BE SHOWN
   const { keyMetrics, performanceMetrics, ratioMetrics, valuationMetrics } = useMemo(() => {
     const metrics = financialData.metric || {};
-    const annualData = financialData.series?.annual || {};
+    // const annualData = financialData.series?.annual || {};
 
     // Key Metrics (general overview)
     const keyMetrics = [

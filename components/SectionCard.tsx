@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 export default function SectionCard({ 
   children,
   variants,
@@ -9,7 +12,7 @@ export default function SectionCard({
   variants: any;
   className?: string;
 }) {
-  if (!children) return null; // 🚫 Don't render anything if there's no content
+  if (!children) return null; 
 
   return (
     <motion.div

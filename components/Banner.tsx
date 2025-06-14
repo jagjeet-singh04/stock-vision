@@ -66,25 +66,25 @@ const Banner = ({ onSelect }: { onSelect: (section: string) => void }) => {
   };
 
   // Reset auto-scroll interval
-  const resetInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    intervalRef.current = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % banners.length);
-    }, 5000);
-  };
+// Reset auto-scroll interval
+const resetInterval = useCallback(() => {
+  if (intervalRef.current) {
+    clearInterval(intervalRef.current);
+  }
+  intervalRef.current = setInterval(() => {
+    setCurrentIndex(prev => (prev + 1) % banners.length);
+  }, 5000);
+}, [banners.length]); // ✅ wrap in useCallback with dependency
+
 
   // Initialize interval
-  useEffect(() => {
-    resetInterval();
-    
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
+ useEffect(() => {
+  resetInterval();
+  return () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+}, [resetInterval]); // ✅ safe dependency
+
 
   return (
     <div className="relative h-64 w-full overflow-hidden rounded-2xl shadow-2xl mb-10">

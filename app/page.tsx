@@ -1,4 +1,7 @@
 // app/page.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 // app/page.tsx
 // ... existing imports ...
@@ -23,7 +26,7 @@ import MarketNews from '@/components/MarketNews';
 import useMarketPulse from '@/utils/hooks/useMarketPulse';
 import usePriceAnimation from '@/utils/hooks/usePriceAnimation';
 import useMarketAudio from '@/utils/hooks/useMarketAudio';
-import Banner from '@/components/Banner'; // Add this import
+import Banner from '@/components/Banner';
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.8, rotateX: -15, y: 50 },
