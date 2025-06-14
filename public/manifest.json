@@ -1,0 +1,14 @@
+{
+  "name": "Stock Vision",
+  "short_name": "Stocks",
+  "icons": [
+    {
+      "src": "/stock-market.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0d1117",
+  "background_color": "#0d1117",
+  "display": "standalone"
+}

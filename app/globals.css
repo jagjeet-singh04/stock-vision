@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -23,4 +24,91 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* Prevent clipping on hover */
+[data-state="hover"] {
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+/* Chart tooltip fixes */
+.recharts-tooltip-wrapper {
+  z-index: 20 !important;
+}
+
+/* Card hover effects */
+.card-hover:hover {
+  transform: scale(1.02);
+  z-index: 10;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Ensure proper scrolling behavior */
+html {
+  overflow-y: scroll;
+}
+
+/* Prevent container from being cut off */
+.container-custom {
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Ensure proper scrolling behavior */
+html {
+  overflow-y: scroll;
+}
+
+/* Prevent container from being cut off */
+.container-custom {
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Chart containers */
+.chart-container {
+  min-width: 300px;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container {
+    min-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* Fix for hover truncation */
+.header-title {
+  padding: 8px 16px;        /* Add sufficient padding */
+  white-space: nowrap;      /* Prevent line breaks */
+  overflow: visible;        /* Ensure text isn't clipped */
+  min-width: max-content;   /* Expand to fit content */
+}
+
+/* If using a hover effect: */
+.header-title:hover {
+  z-index: 100;             /* Bring text above other elements */
+  background: #f0f0f0;      /* Optional: Add background for readability */
+}
+
+/* Chart containers */
+.chart-container {
+  min-width: 300px;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container {
+    min-width: 100%;
+    overflow-x: auto;
+  }
 }
