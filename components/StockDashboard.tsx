@@ -118,62 +118,72 @@ export default function StockDashboard({
   };
 
   return (
-    <div className="space-y-6 min-w-0">
-      <div className="flex flex-wrap gap-4 items-center">
+    <div className="space-y-4 md:space-y-6 min-w-0 px-2 sm:px-0">
+      {/* Search and Time Range Controls */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
         <input
           type="text"
           value={ticker}
           onChange={(e) => setTicker(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSearch(ticker)}
-          className="bg-white/10 border border-white/20 rounded px-4 py-2"
+          className="bg-white/10 border border-white/20 rounded px-3 py-2 sm:px-4 sm:py-2 flex-grow"
           placeholder="Enter symbol (e.g., AAPL)"
         />
         
-        <select
-          value={timeRange}
-          onChange={(e) => handleTimeRangeChange(e.target.value)}
-          className="bg-black/10 border border-black/20 rounded px-4 py-2"
-        >
-          <option value="1D">1 Day</option>
-          <option value="1W">1 Week</option>
-          <option value="1M">1 Month</option>
-          <option value="3M">3 Months</option>
-          <option value="1Y">1 Year</option>
-        </select>
-        
-        <button
-          onClick={() => handleSearch(ticker)}
-          className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded"
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'Search'}
-        </button>
+        <div className="flex gap-3 sm:gap-4">
+          <select
+            value={timeRange}
+            onChange={(e) => handleTimeRangeChange(e.target.value)}
+            className="bg-black/10 border border-black/20 rounded px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base"
+          >
+            <option value="1D">1D</option>
+            <option value="1W">1W</option>
+            <option value="1M">1M</option>
+            <option value="3M">3M</option>
+            <option value="1Y">1Y</option>
+          </select>
+          
+          <button
+            onClick={() => handleSearch(ticker)}
+            className="bg-blue-500 hover:bg-blue-600 px-3 py-2 sm:px-4 sm:py-2 rounded text-sm sm:text-base whitespace-nowrap"
+            disabled={loading}
+          >
+            {loading ? 'Loading...' : 'Search'}
+          </button>
+        </div>
       </div>
 
       <CompanyProfile symbol={ticker} />
 
+      {/* Error and Loading States */}
       {error && (
-        <div className="bg-red-900/20 text-red-400 p-4 rounded">
+        <div className="bg-red-900/20 text-red-400 p-3 sm:p-4 rounded text-sm sm:text-base">
           Error: {String(error)}
         </div>
       )}
 
       {loading && (
-        <div className="text-center py-8 text-gray-400">
+        <div className="text-center py-6 sm:py-8 text-gray-400 text-sm sm:text-base">
           Loading market data...
         </div>
       )}
 
+      {/* Main Content */}
       {!loading && data.length > 0 && (
         <>
-          <OHLCChart data={data} timeframe={timeRange} />
+          <div className="overflow-x-auto">
+            <div className="min-w-[600px]">
+              <OHLCChart data={data} timeframe={timeRange} />
+            </div>
+          </div>
           
-          <div className="flex justify-center my-6">
+          {/* Financial Data Button */}
+          <div className="flex justify-center my-4 sm:my-6">
             <button
               onClick={fetchFinancialData}
               disabled={financialLoading}
               className={`
-                px-6 py-3 rounded-lg text-lg font-medium
+                px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-base sm:text-lg font-medium
                 ${financialLoading 
                   ? 'bg-gray-600 cursor-not-allowed' 
                   : 'bg-green-600 hover:bg-green-700 transition-colors duration-200'}
@@ -183,11 +193,12 @@ export default function StockDashboard({
             </button>
           </div>
 
+          {/* Financial Data Display */}
           {financialData && (
-            <div className="bg-white/5 rounded-lg p-6 border border-white/10 mt-4">
-              <h3 className="text-xl font-bold mb-4">Financial Metrics</h3>
+            <div className="bg-white/5 rounded-lg p-4 sm:p-6 border border-white/10 mt-2 sm:mt-4">
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Financial Metrics</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 {/* Key Metrics and Annual Series sections can be uncommented if needed */}
               </div>
 
@@ -197,28 +208,29 @@ export default function StockDashboard({
         </>
       )}
 
-      <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-        <h3 className="text-xl font-bold mb-4">Latest News</h3>
+      {/* News Section */}
+      <div className="bg-white/5 rounded-lg p-4 sm:p-6 border border-white/10">
+        <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Latest News</h3>
         {news.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {news.map((item) => (
-              <div key={item.id} className="border-b border-white/10 pb-4 last:border-0">
+              <div key={item.id} className="border-b border-white/10 pb-3 sm:pb-4 last:border-0">
                 <a 
                   href={item.url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="hover:underline"
+                  className="hover:underline block"
                 >
-                  <h4 className="font-medium">{item.headline}</h4>
+                  <h4 className="font-medium text-sm sm:text-base">{item.headline}</h4>
                 </a>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-xs sm:text-sm text-gray-400 mt-1">
                   {item.source} • {item.datetime ? new Date(item.datetime * 1000).toLocaleDateString() : ''}
                 </p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-400">No recent news found</p>
+          <p className="text-gray-400 text-sm sm:text-base">No recent news found</p>
         )}
       </div>
     </div>

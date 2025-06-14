@@ -153,24 +153,24 @@ export default function FinancialDataVisualization({
     return value;
   };
 
-  const renderMetricCards = (metrics: MetricItem[]) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+   const renderMetricCards = (metrics: MetricItem[]) => (
+    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
       {metrics.map(({ name, value, key }) => (
         <div 
           key={key}
-          className={`p-4 rounded-lg transition-all border
+          className={`p-2 sm:p-3 rounded-lg transition-all border
             ${hoveredMetric === key ? 
               'bg-blue-900/50 scale-105 border-blue-500' : 
               'bg-gray-800/50 border-gray-700'}`}
           onMouseEnter={() => setHoveredMetric(key)}
           onMouseLeave={() => setHoveredMetric(null)}
         >
-          <div className="text-sm text-gray-400">{name}</div>
-          <div className="text-xl font-bold mt-1">
+          <div className="text-xs sm:text-sm text-gray-400 truncate">{name}</div>
+          <div className="text-base sm:text-lg font-bold truncate">
             {typeof value === 'number' ? formatValue(value) : value}
           </div>
           {hoveredMetric === key && (
-            <div className="text-xs text-gray-400 mt-2">
+            <div className="text-xs text-gray-400 mt-1 line-clamp-2">
               {getMetricDescription(key)}
             </div>
           )}
@@ -179,63 +179,89 @@ export default function FinancialDataVisualization({
     </div>
   );
 
+
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 shadow-2xl">
+    <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-3 sm:p-4 shadow-2xl">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-4 gap-2 mb-6">
-          <TabsTrigger value="keyMetrics" className="py-3 hover:bg-gray-700 transition-colors">📊 Key Metrics</TabsTrigger>
-          <TabsTrigger value="performance" className="py-3 hover:bg-gray-700 transition-colors">📈 Performance</TabsTrigger>
-          <TabsTrigger value="ratios" className="py-3 hover:bg-gray-700 transition-colors">🧮 Key Ratios</TabsTrigger>
-          <TabsTrigger value="valuation" className="py-3 hover:bg-gray-700 transition-colors">💰 Valuation</TabsTrigger>
+        <TabsList className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+          <TabsTrigger 
+            value="keyMetrics" 
+            className="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm hover:bg-gray-700 transition-colors"
+          >
+            <span className="hidden xs:inline">📊 </span>
+            <span>Metrics</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="performance" 
+            className="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm hover:bg-gray-700 transition-colors"
+          >
+            <span className="hidden xs:inline">📈 </span>
+            <span>Performance</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="ratios" 
+            className="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm hover:bg-gray-700 transition-colors"
+          >
+            <span className="hidden xs:inline">🧮 </span>
+            <span>Ratios</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="valuation" 
+            className="py-1 sm:py-2 px-2 sm:px-3 text-xs sm:text-sm hover:bg-gray-700 transition-colors"
+          >
+            <span className="hidden xs:inline">💰 </span>
+            <span>Valuation</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Key Metrics Tab */}
         <TabsContent value="keyMetrics">
-          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4">Key Financial Metrics</h3>
+          <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+            <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Key Financial Metrics</h3>
             {renderMetricCards(keyMetrics)}
           </div>
         </TabsContent>
 
         {/* Performance Tab */}
         <TabsContent value="performance">
-          <div className="space-y-6">
-            <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-              <h3 className="text-lg font-semibold mb-4">Performance Metrics</h3>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+              <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Performance Metrics</h3>
               {renderMetricCards(performanceMetrics)}
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-                <h3 className="text-lg font-semibold mb-4">Historical Performance</h3>
-                <div className="h-80">
+            <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">
+              <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+                <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Historical Performance</h3>
+                <div className="h-[250px] sm:h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={performanceData}>
                       <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
                       <XAxis 
                         dataKey="year" 
-                        tick={{ fill: '#9CA3AF' }}
-                        tickMargin={10}
+                        tick={{ fill: '#9CA3AF', fontSize: 10 }}
+                        tickMargin={5}
                       />
                       <YAxis 
-                        tick={{ fill: '#9CA3AF' }}
+                        tick={{ fill: '#9CA3AF', fontSize: 10 }}
                         tickFormatter={valueFormatter}
                       />
                       <Tooltip 
                         contentStyle={{
                           background: 'rgba(31, 41, 55, 0.9)',
                           borderColor: '#4B5563',
-                          borderRadius: '0.5rem'
+                          borderRadius: '0.5rem',
+                          fontSize: 11
                         }}
                         formatter={(value: number) => [`$${valueFormatter(value)}`, 'Value']}
                       />
-                      <Legend />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
                       <Line 
                         type="monotone" 
                         dataKey="eps" 
                         stroke="#8884d8" 
                         strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
+                        dot={{ r: 2 }}
+                        activeDot={{ r: 4 }}
                         name="EPS"
                       />
                       <Line 
@@ -243,27 +269,27 @@ export default function FinancialDataVisualization({
                         dataKey="revenuePerShare" 
                         stroke="#82ca9d" 
                         strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
+                        dot={{ r: 2 }}
+                        activeDot={{ r: 4 }}
                         name="Revenue/Share"
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-                <h3 className="text-lg font-semibold mb-4">Growth Radar</h3>
-                <div className="h-80">
+              <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+                <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Growth Radar</h3>
+                <div className="h-[250px] sm:h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={ratioData.slice(0, 6)}>
+                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={ratioData.slice(0, 6)}>
                       <PolarGrid stroke="#4B5563" />
                       <PolarAngleAxis 
                         dataKey="name" 
-                        tick={{ fill: '#9CA3AF' }}
+                        tick={{ fill: '#9CA3AF', fontSize: 9 }}
                       />
                       <PolarRadiusAxis 
                         angle={30} 
-                        tick={{ fill: '#9CA3AF' }}
+                        tick={{ fill: '#9CA3AF', fontSize: 9 }}
                       />
                       <Radar 
                         name="Ratios" 
@@ -276,7 +302,8 @@ export default function FinancialDataVisualization({
                         contentStyle={{
                           background: 'rgba(31, 41, 55, 0.9)',
                           borderColor: '#4B5563',
-                          borderRadius: '0.5rem'
+                          borderRadius: '0.5rem',
+                          fontSize: 11
                         }}
                         formatter={valueFormatter}
                       />
@@ -290,16 +317,16 @@ export default function FinancialDataVisualization({
 
         {/* Ratio Metrics Tab */}
         <TabsContent value="ratios">
-          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4">Key Financial Ratios</h3>
+          <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+            <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Key Financial Ratios</h3>
             {renderMetricCards(ratioMetrics)}
           </div>
         </TabsContent>
 
         {/* Valuation Metrics Tab */}
         <TabsContent value="valuation">
-          <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-            <h3 className="text-lg font-semibold mb-4">Valuation Metrics</h3>
+          <div className="bg-gray-800/50 p-2 sm:p-3 rounded-lg border border-gray-700">
+            <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Valuation Metrics</h3>
             {renderMetricCards(valuationMetrics)}
           </div>
         </TabsContent>
@@ -307,6 +334,7 @@ export default function FinancialDataVisualization({
     </div>
   );
 }
+
 
 function getMetricDescription(metric: string): string {
   const descriptions: Record<string, string> = {

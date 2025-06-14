@@ -259,13 +259,13 @@ useEffect(() => {
                 </AnimatePresence>
               </div>
             </main>
+            
+            {/* NEW: Footer */}
+            <Footer />
           </>
+  
         )}
       </AnimatePresence>
-
-        {/* NEW: Footer */}
-      <Footer />
-
     </div>
   );
 }
