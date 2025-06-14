@@ -3,16 +3,22 @@ import { motion } from 'framer-motion';
 import useMarketPulse from '../utils/hooks/useMarketPulse';
 import useMarketAudio from '../utils/hooks/useMarketAudio';
 import { FaHome } from 'react-icons/fa';
+import { Dispatch, SetStateAction } from 'react';
+
+// Define the Section type
+type Section = 'quote' | 'ticker' | 'dashboard' | 'news' | null;
+
+interface NavbarProps {
+  activeSection: Section;
+  setActiveSection: Dispatch<SetStateAction<Section>>;
+  onHomeClick: () => void;
+}
 
 export default function Navbar({ 
   activeSection, 
   setActiveSection,
   onHomeClick
-}: {
-  activeSection: string | null,
-  setActiveSection: (section: string | null) => void,
-  onHomeClick: () => void
-}) {
+}: NavbarProps) {
   const { sentiment } = useMarketPulse();
   const { playTickSound } = useMarketAudio();
 
@@ -56,7 +62,7 @@ export default function Navbar({
               <li key={item.key}>
                 <motion.button
                   onClick={() => {
-                    setActiveSection(item.key);
+                    setActiveSection(item.key as Section);
                     playTickSound();
                   }}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${

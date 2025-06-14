@@ -4,7 +4,16 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-const Banner = ({ onSelect }: { onSelect: (section: string) => void }) => {
+
+// components/Banner.tsx
+type Section = 'quote' | 'ticker' | 'dashboard' | 'news';
+
+interface BannerProps {
+  onSelect: (section: Section) => void;
+}
+
+const Banner = ({ onSelect }: BannerProps) => {
+  // ... existing Banner implementation ...
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
@@ -161,5 +170,7 @@ const resetInterval = useCallback(() => {
     </div>
   );
 };
+
+
 
 export default Banner;

@@ -1,6 +1,8 @@
 // components/FeatureCard.tsx
 import { motion } from 'framer-motion';
 
+// type Section = 'quote' | 'ticker' | 'dashboard' | 'news';
+
 const FeatureCard = ({ 
   title, 
   description, 

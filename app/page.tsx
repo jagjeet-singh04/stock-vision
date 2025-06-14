@@ -7,6 +7,7 @@
 // ... existing imports ...
 import FeatureCard from '@/components/FeatureCard'; // Add this
 import Footer from '@/components/Footer'; // Add this
+type Section = 'quote' | 'ticker' | 'dashboard' | 'news' | null;
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,7 +59,7 @@ const priceFlashVariants = {
 
 export default function Home() {
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
-  const [activeSection, setActiveSection] = useState<'quote' | 'ticker' | 'dashboard' | 'news' | null>(null);
+  const [activeSection, setActiveSection] = useState<Section>(null);
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true); // Add this state
   const containerRef = useRef<HTMLDivElement>(null);
