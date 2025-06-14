@@ -235,18 +235,17 @@ useEffect(() => {
                   )}
 
                   {activeSection === 'dashboard' && (
-                    <SectionCard variants={cardVariants}>
-                      <StockDashboard 
-                        key={selectedSymbol}
-                        initialTicker={selectedSymbol} 
-                        onSymbolChange={setSelectedSymbol}
-                      />
-                      <QuickSelect 
-                        selectedSymbol={selectedSymbol}
-                        onSelect={handleSymbolChange}
-                      />
-                    </SectionCard>
-                  )}
+      <SectionCard variants={cardVariants}>
+        <StockDashboard 
+          initialTicker={selectedSymbol}
+          onSymbolChange={setSelectedSymbol}
+        />
+        <QuickSelect 
+          selectedSymbol={selectedSymbol}
+          onSelect={handleSymbolChange}
+        />
+      </SectionCard>
+    )}
 
                   {activeSection === 'news' && (
                     <SectionCard variants={cardVariants}>
