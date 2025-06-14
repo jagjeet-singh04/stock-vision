@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+// components/StockDashboard.tsx
 'use client';
 
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
@@ -8,6 +9,7 @@ import useOHLCData from '@/utils/hooks/useOHLCData';
 import OHLCChart from './OHLCChart';
 import CompanyProfile from './CompanyProfile';
 import FinancialDataVisualization from './FinancialDataVisualization';
+import { FinancialData } from '@/utils/financial';
 
 interface NewsItem {
   id: number;
@@ -15,17 +17,6 @@ interface NewsItem {
   source: string;
   url: string;
   datetime?: number;
-}
-
-interface FinancialData {
-  metric?: Record<string, unknown>;
-  series?: {
-    annual?: Array<{
-      period: string;
-      v: number;
-    }>;
-  };
-  [key: string]: unknown;
 }
 
 interface StockDashboardProps {

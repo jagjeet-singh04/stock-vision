@@ -1,14 +1,19 @@
-// components/OHLCChart.tsx
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import  OHLCData  from '../utils/polygonApi';
+
+interface OHLCDataPoint {
+  t: number;  // timestamp
+  o: number;  // open
+  h: number;  // high
+  l: number;  // low
+  c: number;  // close
+  v: number;  // volume
+  vw?: number; // volume weighted average price
+}
 
 interface OHLCChartProps {
-  data: OHLCData[];
-  ticker: string;
+  data: OHLCDataPoint[];
+  timeframe: string;
   chartType?: 'line' | 'candlestick' | 'volume';
   height?: number;
 }
@@ -22,6 +27,16 @@ interface ChartData {
   close: number;
   volume: number;
   vwap?: number;
+}
+
+interface TooltipProps {
+  active?: boolean;
+  payload?: {
+    payload: ChartData;
+    value: number;
+    name: string;
+  }[];
+  label?: string;
 }
 
 const formatDate = (timestamp: number) => {
@@ -47,7 +62,7 @@ const formatVolume = (value: number) => {
   return value.toString();
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -69,7 +84,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const OHLCChart: React.FC<OHLCChartProps> = ({ 
   data, 
-  ticker, 
+  timeframe, 
   chartType = 'line',
   height = 400 
 }) => {
@@ -118,7 +133,6 @@ const OHLCChart: React.FC<OHLCChartProps> = ({
         );
 
       case 'candlestick':
-        // Simplified candlestick using multiple lines
         return (
           <ResponsiveContainer width="100%" height={height}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -173,7 +187,7 @@ const OHLCChart: React.FC<OHLCChartProps> = ({
           </ResponsiveContainer>
         );
 
-      default: // line chart
+      default:
         return (
           <ResponsiveContainer width="100%" height={height}>
             <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -208,7 +222,7 @@ const OHLCChart: React.FC<OHLCChartProps> = ({
     <div className="w-full">
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-gray-800">
-          {ticker} - {chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart
+          {timeframe} - {chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart
         </h3>
         <p className="text-sm text-gray-600">
           Showing {data.length} data points

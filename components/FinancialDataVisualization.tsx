@@ -1,26 +1,26 @@
-// components/FinancialDataVisualization.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 
 'use client';
 
 import { useState, useMemo } from 'react';
 import { 
   LineChart, RadarChart, AreaChart, PieChart,
-  Line, Bar, Radar,   XAxis, YAxis, 
+  Line, Bar, Radar, XAxis, YAxis, 
   CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Cell, PolarGrid, PolarAngleAxis, PolarRadiusAxis
 } from 'recharts';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
+interface FinancialDataPoint {
+  period: string;
+  v: number;
+}
+
 interface FinancialData {
   series?: {
     annual?: {
-      [key: string]: Array<{
-        period: string;
-        v: number;
-      }>;
+      [key: string]: FinancialDataPoint[];
     };
   };
   metric?: {
@@ -34,6 +34,18 @@ interface MetricItem {
   key: string;
 }
 
+interface PerformanceDataItem {
+  date: Date;
+  year: number;
+  [key: string]: number | Date | string;
+  name: string;
+}
+
+interface ChartDataItem {
+  name: string;
+  value: number;
+}
+
 const formatMetricName = (key: string): string => {
   return key
     .replace(/([A-Z])/g, ' $1')
@@ -43,14 +55,15 @@ const formatMetricName = (key: string): string => {
     .trim();
 };
 
-const FinancialDashboard = ({ financialData }: { financialData: FinancialData }) => {
+export default function FinancialDataVisualization({ 
+  financialData 
+}: { financialData: FinancialData }) {
   const [activeTab, setActiveTab] = useState('keyMetrics');
   const [hoveredMetric, setHoveredMetric] = useState<string | null>(null);
 
-  // Categorize metrics into groups - ONLY THESE WILL BE SHOWN
+  // Categorize metrics into groups
   const { keyMetrics, performanceMetrics, ratioMetrics, valuationMetrics } = useMemo(() => {
     const metrics = financialData.metric || {};
-    // const annualData = financialData.series?.annual || {};
 
     // Key Metrics (general overview)
     const keyMetrics = [
@@ -64,7 +77,7 @@ const FinancialDashboard = ({ financialData }: { financialData: FinancialData })
     ].filter(key => metrics[key] !== undefined)
      .map(key => ({
         name: formatMetricName(key),
-        value: metrics[key],
+        value: metrics[key]!,
         key
       }));
 
@@ -79,7 +92,7 @@ const FinancialDashboard = ({ financialData }: { financialData: FinancialData })
     ].filter(key => metrics[key] !== undefined)
      .map(key => ({
         name: formatMetricName(key),
-        value: metrics[key],
+        value: metrics[key]!,
         key
       }));
 
@@ -104,31 +117,31 @@ const FinancialDashboard = ({ financialData }: { financialData: FinancialData })
     return { keyMetrics, performanceMetrics, ratioMetrics, valuationMetrics };
   }, [financialData]);
 
-  // Chart data transformations - ONLY FOR YOUR METRICS
+  // Chart data transformations
   const { performanceData, ratioData, valuationData } = useMemo(() => {
     const annualData = financialData.series?.annual || {};
 
     const performanceData = ['eps', 'revenuePerShare', 'freeCashFlowPerShare'].flatMap(key => 
-      annualData[key]?.map((item: { period: string; v: number }) => ({
+      annualData[key]?.map((item) => ({
         date: new Date(item.period),
         year: new Date(item.period).getFullYear(),
         [key]: item.v,
         name: formatMetricName(key)
       })) || []
-    );
+    ) as PerformanceDataItem[];
 
     const ratioData = ratioMetrics.map(item => ({
       name: item.name,
-      value: Number(item.value)
+      value: typeof item.value === 'number' ? item.value : 0
     }));
 
     const valuationData = valuationMetrics.map(item => ({
       name: item.name,
-      value: Number(item.value)
+      value: typeof item.value === 'number' ? item.value : 0
     }));
 
     return { performanceData, ratioData, valuationData };
-  }, [financialData]);
+  }, [financialData, ratioMetrics, valuationMetrics]);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
   const valueFormatter = (value: number) => value.toFixed(2);
@@ -293,7 +306,7 @@ const FinancialDashboard = ({ financialData }: { financialData: FinancialData })
       </Tabs>
     </div>
   );
-};
+}
 
 function getMetricDescription(metric: string): string {
   const descriptions: Record<string, string> = {
@@ -323,5 +336,3 @@ function getMetricDescription(metric: string): string {
   };
   return descriptions[metric] || "Key financial metric indicating company performance";
 }
-
-export default FinancialDashboard;
